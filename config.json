@@ -1,0 +1,50 @@
+{
+  "Environment": "production",
+  "ServerPort": 8080,
+  "Services": {
+    "RabbitMq": "amqp://user:pass@host:5672",
+    "SendGrid": {
+      "url": "https://api.sendgrid.com/v3/ ",
+      "TemplatesID": {
+        "FancyMail": "d-hash-id"
+      }
+    },
+    "OtherService": "https://dominio.com/"
+  },
+  "Secure": {
+    "JWTAccessSecure": "Triwahyu6509Secure",
+    "JWTRefreshSecure": "Triwahyu6509Refresh",
+    "JWTAccessTimeMinute": 10,
+    "JWTRefreshTimeHour": 10
+
+  },
+  "Endpoints": {
+    "SiteExample": "http://localhost:8080/"
+  },
+  "Tools": {
+    "WkhtmltopdfBin": "/opt/bin/wkhtmltopdf"
+  },
+  "Databases": {
+    "MySQL": {
+      "BoilerplateGo": {
+        "Read": {
+          "Hostname": "127.0.0.1",
+          "Name": "boilerplate_go",
+          "Username": "root",
+          "Password": "root",
+          "Port": "3306",
+          "Parameter": "?parseTime=true"
+        },
+        "Write": {
+          "Hostname": "127.0.0.1",
+          "Name": "boilerplate_go",
+          "Username": "root",
+          "Password": "root",
+          "Port": "3306",
+          "Parameter": "?parseTime=true"
+        }
+      }
+    }
+  }
+}
+
