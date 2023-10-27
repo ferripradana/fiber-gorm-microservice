@@ -1,7 +1,7 @@
 package medicine
 
 import (
-	"errors"
+	"fiber-gorm-microservice/domain/errors"
 	"gorm.io/gorm"
 )
 
@@ -31,7 +31,7 @@ func (m MedicineRepositoryImpl) GetAll(page int64, limit int64) (*PaginationResu
 	}
 
 	if limit < 1 {
-		return &PaginationResultMedicine{}, errors.New("Limit Cannot < 1")
+		return &PaginationResultMedicine{}, errors.NewAppErrorWithType(errors.ValidationError)
 	}
 
 	numPages := (total + limit - 1) / limit
