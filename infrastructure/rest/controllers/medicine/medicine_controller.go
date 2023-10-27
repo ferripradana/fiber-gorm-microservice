@@ -1,4 +1,4 @@
-package controllers
+package medicine
 
 import "github.com/gofiber/fiber/v2"
 

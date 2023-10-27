@@ -1,4 +1,4 @@
-package controllers
+package medicine
 
 import (
 	medicineService "fiber-gorm-microservice/application/service/medicine"
