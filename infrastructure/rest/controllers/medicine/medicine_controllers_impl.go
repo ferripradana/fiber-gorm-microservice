@@ -2,6 +2,7 @@ package medicine
 
 import (
 	medicineService "fiber-gorm-microservice/application/service/medicine"
+	"fiber-gorm-microservice/domain/errors"
 	"github.com/gofiber/fiber/v2"
 	"strconv"
 )
@@ -21,14 +22,16 @@ func (controller MedicineControllerImpl) GetAllMedicines(ctx *fiber.Ctx) error {
 	limitStr := ctx.Query("limit", "10")
 
 	page, err := strconv.ParseInt(pageStr, 10, 64)
-	limit, err := strconv.ParseInt(limitStr, 10, 64)
-	medicines, err := controller.Service.GetAll(page, limit)
-
 	if err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		return fiber.NewError(err.(*errors.AppErrorImpl).Status, err.Error())
 	}
-
+	limit, err := strconv.ParseInt(limitStr, 10, 64)
+	if err != nil {
+		return fiber.NewError(err.(*errors.AppErrorImpl).Status, err.Error())
+	}
+	medicines, err := controller.Service.GetAll(page, limit)
+	if err != nil {
+		return fiber.NewError(err.(*errors.AppErrorImpl).Status, err.Error())
+	}
 	return ctx.Status(fiber.StatusOK).JSON(medicines)
 }

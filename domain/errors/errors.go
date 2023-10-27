@@ -33,14 +33,16 @@ type AppError interface {
 }
 
 type AppErrorImpl struct {
-	Err  error
-	Type string
+	Err    error
+	Type   string
+	Status int
 }
 
-func NewAppErrorImpl(err error, errType string) AppError {
+func NewAppErrorImpl(err error, errType string, status int) AppError {
 	return &AppErrorImpl{
-		Err:  err,
-		Type: errType,
+		Err:    err,
+		Type:   errType,
+		Status: status,
 	}
 }
 
@@ -50,23 +52,32 @@ func (a *AppErrorImpl) Error() string {
 
 func NewAppErrorWithType(errType string) AppError {
 	var err error
+	var status int
 	switch errType {
 	case NotFound:
 		err = goErrors.New(NotFoundMessage)
+		status = 404
 	case ValidationError:
 		err = goErrors.New(ValidationErrorMessage)
+		status = 400
 	case ResourceAlreadyExists:
 		err = goErrors.New(AlreadyExistsErrorMessage)
+		status = 500
 	case RepositoryError:
 		err = goErrors.New(RepositoryErrorMessage)
+		status = 500
 	case NotAuthenticated:
 		err = goErrors.New(NotAuthenticatedErrorMessage)
+		status = 401
 	case NotAuthorized:
 		err = goErrors.New(NotAuthorizedErrorMessage)
+		status = 403
 	case TokenGeneratorError:
 		err = goErrors.New(TokenGeneratorErrorMessage)
+		status = 500
 	default:
 		err = goErrors.New(UnknownErrorMessage)
+		status = 500
 	}
-	return NewAppErrorImpl(err, errType)
+	return NewAppErrorImpl(err, errType, status)
 }
