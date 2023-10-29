@@ -32,7 +32,7 @@ func (controller *AuthControllerImpl) Login(ctx *fiber.Ctx) error {
 	}
 	authDataUser, err := controller.AuthService.Login(user)
 	if err != nil {
-		appError := errors.NewAppErrorWithType(errors.NotAuthorized)
+		appError := errors.NewAppErrorImpl(err, errors.NotAuthorized, fiber.StatusUnauthorized)
 		return fiber.NewError(appError.(*errors.AppErrorImpl).Status, appError.Error())
 	}
 	return ctx.Status(fiber.StatusOK).JSON(authDataUser)
