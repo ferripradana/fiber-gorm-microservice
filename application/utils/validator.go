@@ -5,9 +5,21 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func ValidateRequest(ctx *fiber.Ctx, req interface{}) error {
-	validate := validator.New()
-	if err := validate.Struct(req); err != nil {
+type Validation struct {
+	Validator *validator.Validate
+}
+
+func NewValidation() *Validation {
+	return &Validation{
+		Validator: validator.New(),
+	}
+}
+
+func (v *Validation) ValidateRequest(ctx *fiber.Ctx, request interface{}) error {
+	if err := ctx.BodyParser(request); err != nil {
+		return err
+	}
+	if err := v.Validator.Struct(request); err != nil {
 		return err
 	}
 	return nil

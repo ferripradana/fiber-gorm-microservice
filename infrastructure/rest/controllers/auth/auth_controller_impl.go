@@ -18,11 +18,8 @@ func NewAuthControllerImpl(service authService.AuthService) AuthController {
 }
 
 func (controller *AuthControllerImpl) Login(ctx *fiber.Ctx) error {
-	var request LoginRequest
-	if err := ctx.BodyParser(&request); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-	if err := utils.ValidateRequest(ctx, request); err != nil {
+	request := new(LoginRequest)
+	if err := utils.NewValidation().ValidateRequest(ctx, request); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
