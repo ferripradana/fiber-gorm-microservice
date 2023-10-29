@@ -3,6 +3,7 @@ module fiber-gorm-microservice
 go 1.19
 
 require (
+	github.com/go-playground/validator/v10 v10.15.5
 	github.com/gofiber/fiber/v2 v2.50.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/mitchellh/mapstructure v1.5.0
@@ -11,7 +12,6 @@ require (
 	gorm.io/driver/mysql v1.5.2
 	gorm.io/gorm v1.25.5
 	gorm.io/plugin/dbresolver v1.4.7
-	github.com/go-playground/validator/v10 v10.15.5
 )
 
 require (
