@@ -2,6 +2,7 @@ package auth
 
 import (
 	authService "fiber-gorm-microservice/application/service/auth"
+	"fiber-gorm-microservice/application/utils"
 	"fiber-gorm-microservice/domain/errors"
 	"github.com/gofiber/fiber/v2"
 )
@@ -17,8 +18,11 @@ func NewAuthControllerImpl(service authService.AuthService) AuthController {
 }
 
 func (controller *AuthControllerImpl) Login(ctx *fiber.Ctx) error {
-	request := new(LoginRequest)
+	var request LoginRequest
 	if err := ctx.BodyParser(&request); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	if err := utils.ValidateRequest(ctx, request); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 

@@ -2,7 +2,7 @@ package routes
 
 import (
 	"fiber-gorm-microservice/infrastructure/rest/controllers/medicine"
-	"fiber-gorm-microservice/infrastructure/rest/routes/middlewares"
+	"fiber-gorm-microservice/infrastructure/rest/middlewares"
 	"github.com/gofiber/fiber/v2"
 )
 
