@@ -11,6 +11,7 @@ func MedicineRoutes(router fiber.Router, controller medicine.MedicineController)
 	routerMedicine.Use(middlewares.AuthJWTMiddleware)
 	{
 		routerMedicine.Get("/", controller.GetAllMedicines)
+		routerMedicine.Post("/", controller.Create)
 	}
 
 }

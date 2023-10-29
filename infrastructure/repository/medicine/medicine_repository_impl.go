@@ -1,7 +1,9 @@
 package medicine
 
 import (
+	"encoding/json"
 	"fiber-gorm-microservice/domain/errors"
+	domainMedicine "fiber-gorm-microservice/domain/medicine"
 	"gorm.io/gorm"
 )
 
@@ -15,7 +17,7 @@ func NewMedicineRepositoryImpl(db *gorm.DB) MedicineRepository {
 	}
 }
 
-func (m MedicineRepositoryImpl) GetAll(page int64, limit int64) (*PaginationResultMedicine, error) {
+func (m *MedicineRepositoryImpl) GetAll(page int64, limit int64) (*PaginationResultMedicine, error) {
 	var medicines []Medicine
 	var total int64
 
@@ -53,4 +55,28 @@ func (m MedicineRepositoryImpl) GetAll(page int64, limit int64) (*PaginationResu
 		NumPages:   numPages,
 	}, nil
 
+}
+
+func (m *MedicineRepositoryImpl) Create(newMedicine *domainMedicine.Medicine) (createdMedicine *domainMedicine.Medicine, err error) {
+	medicine := fromDomainMapper(newMedicine)
+	tx := m.DB.Create(medicine)
+
+	if tx.Error != nil {
+		byteErr, _ := json.Marshal(tx.Error)
+		var newError errors.GormErr
+		err = json.Unmarshal(byteErr, &newError)
+		if err != nil {
+			return createdMedicine, err
+		}
+		switch newError.Number {
+		case 1062:
+			err = errors.NewAppErrorWithType(errors.ResourceAlreadyExists)
+		default:
+			err = errors.NewAppErrorWithType(errors.UnknownError)
+		}
+		return createdMedicine, err
+	}
+
+	createdMedicine = medicine.toDomainMapper()
+	return createdMedicine, nil
 }

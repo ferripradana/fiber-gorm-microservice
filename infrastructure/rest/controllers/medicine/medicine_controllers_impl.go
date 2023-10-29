@@ -2,6 +2,7 @@ package medicine
 
 import (
 	medicineService "fiber-gorm-microservice/application/service/medicine"
+	"fiber-gorm-microservice/application/utils"
 	"fiber-gorm-microservice/domain/errors"
 	"github.com/gofiber/fiber/v2"
 	"strconv"
@@ -17,7 +18,7 @@ func NewMedicineControllerImpl(service medicineService.MedicineService) Medicine
 	}
 }
 
-func (controller MedicineControllerImpl) GetAllMedicines(ctx *fiber.Ctx) error {
+func (controller *MedicineControllerImpl) GetAllMedicines(ctx *fiber.Ctx) error {
 	pageStr := ctx.Query("page", "1")
 	limitStr := ctx.Query("limit", "10")
 
@@ -35,4 +36,26 @@ func (controller MedicineControllerImpl) GetAllMedicines(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.Status(fiber.StatusOK).JSON(medicines)
+}
+
+func (controller *MedicineControllerImpl) Create(ctx *fiber.Ctx) error {
+	request := new(NewMedicineRequest)
+	if err := utils.NewValidation().ValidateRequest(ctx, request); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	newMedicine := medicineService.NewMedicine{
+		Name:        request.Name,
+		Description: request.Description,
+		EANCode:     request.EanCode,
+		Laboratory:  request.Laboratory,
+	}
+
+	domainMedicine, err := controller.Service.Create(&newMedicine)
+	if err != nil {
+		appError := errors.NewAppErrorImpl(err, errors.RepositoryError, fiber.StatusInternalServerError)
+		return fiber.NewError(appError.(*errors.AppErrorImpl).Status, appError.Error())
+	}
+
+	return ctx.Status(fiber.StatusCreated).JSON(domainMedicine)
 }
