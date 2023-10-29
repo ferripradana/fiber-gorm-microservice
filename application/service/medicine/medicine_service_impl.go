@@ -35,3 +35,15 @@ func (service *MedicineServiceImpl) Create(medicine *NewMedicine) (*domainMedici
 	medicineDomain := medicine.toDomainMapper()
 	return service.MedicineRepository.Create(medicineDomain)
 }
+
+func (service *MedicineServiceImpl) GetById(id int) (*domainMedicine.Medicine, error) {
+	return service.MedicineRepository.GetById(id)
+}
+
+func (service *MedicineServiceImpl) Delete(id int) error {
+	return service.MedicineRepository.Delete(id)
+}
+
+func (service *MedicineServiceImpl) Update(id int, medicineMap map[string]interface{}) (*domainMedicine.Medicine, error) {
+	return service.MedicineRepository.Update(id, medicineMap)
+}
