@@ -69,6 +69,7 @@ docker-compose down
 ```
 
 SWAGGER
-![image](https://github.com/ferripradana/gin-gorm-microservice/assets/13129987/87be18ec-6cad-45f0-906f-54ba5bfaba4d)
-http://localhost:8080/v1/swagger/index.html
+```
+Coming Soon
+```
 
