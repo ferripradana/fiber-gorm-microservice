@@ -2,6 +2,17 @@
 
 Under Construction 
 
+Tech Stacks
+```
+1. Go Programming Language
+2. MySQL
+3. Go Fiber Framework
+4. Gorm ORM
+5. JWT (Json Web Token)
+6. Docker
+7. Swagger
+```
+
 Login API
 ```
 curl --location --request POST 'http://localhost:8080/v1/auth/login' \
