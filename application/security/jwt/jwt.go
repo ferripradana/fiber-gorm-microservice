@@ -2,7 +2,9 @@ package jwt
 
 import (
 	"errors"
+	domainErrors "fiber-gorm-microservice/domain/errors"
 	"fmt"
+	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/spf13/viper"
 	"strconv"
@@ -85,4 +87,33 @@ func GenerateJWTToken(userId int, tokenType string) (appToken *AppToken, err err
 	}
 
 	return
+}
+
+func GetClaimsAndVerifyToken(tokenString string, tokenType string) (claims jwt.MapClaims, err error) {
+	viper.SetConfigFile("config.json")
+	if err := viper.ReadInConfig(); err != nil {
+		_ = fmt.Errorf("fatal error in config file: %s", err.Error())
+	}
+
+	JwtRefreshSecure := viper.GetString(TokenTypeKeyName[tokenType])
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, domainErrors.NewAppErrorWithType(domainErrors.NotAuthenticated)
+		}
+		return []byte(JwtRefreshSecure), nil
+	})
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		if claims["type"] != tokenType {
+			return nil, domainErrors.NewAppErrorImpl(errors.New("invalid token type"), domainErrors.NotAuthenticated, fiber.StatusUnauthorized)
+		}
+
+		var timeExpire = claims["exp"].(float64)
+		if time.Now().Unix() > int64(timeExpire) {
+			return nil, domainErrors.NewAppErrorImpl(errors.New("token expired"), domainErrors.NotAuthenticated, fiber.StatusUnauthorized)
+		}
+
+		return claims, nil
+	}
+	return nil, err
 }

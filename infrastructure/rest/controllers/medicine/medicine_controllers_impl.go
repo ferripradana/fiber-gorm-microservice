@@ -33,5 +33,6 @@ func (controller MedicineControllerImpl) GetAllMedicines(ctx *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(err.(*errors.AppErrorImpl).Status, err.Error())
 	}
+
 	return ctx.Status(fiber.StatusOK).JSON(medicines)
 }

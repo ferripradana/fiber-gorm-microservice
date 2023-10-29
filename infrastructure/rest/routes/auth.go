@@ -7,5 +7,5 @@ import (
 
 func AuthRoutes(router fiber.Router, controller auth.AuthController) {
 	routerAuth := router.Group("/auth")
-	routerAuth.Get("/login", controller.Login)
+	routerAuth.Post("/login", controller.Login)
 }
