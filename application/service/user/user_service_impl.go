@@ -29,3 +29,31 @@ func (service *UserServiceImpl) Create(newUser *NewUser) (*domainUser.User, erro
 	user.HashPassword = string(hash)
 	return service.UserRepository.Create(user)
 }
+
+func (service *UserServiceImpl) GetaAll(page int64, limit int64) (*PaginationResultUser, error) {
+	all, err := service.UserRepository.GetAll(page, limit)
+	if err != nil {
+		return &PaginationResultUser{}, err
+	}
+	return &PaginationResultUser{
+		Data:       all.Data,
+		Total:      all.Total,
+		Limit:      all.Limit,
+		Current:    all.Current,
+		NextCursor: all.NextCursor,
+		PrevCursor: all.PrevCursor,
+		NumPages:   all.NumPages,
+	}, nil
+}
+
+func (service *UserServiceImpl) GetById(id int) (*domainUser.User, error) {
+	return service.UserRepository.GetById(id)
+}
+
+func (service *UserServiceImpl) Delete(id int) error {
+	return service.UserRepository.Delete(id)
+}
+
+func (service *UserServiceImpl) Update(id int, userMap map[string]interface{}) (*domainUser.User, error) {
+	return service.UserRepository.Update(id, userMap)
+}

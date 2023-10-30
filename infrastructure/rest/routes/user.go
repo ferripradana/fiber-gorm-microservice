@@ -11,5 +11,9 @@ func UserRoutes(router fiber.Router, controller user.UserController) {
 	routerUser.Use(middlewares.AuthJWTMiddleware)
 	{
 		routerUser.Post("/", controller.NewUser)
+		routerUser.Get("/:id", controller.GetUserById)
+		routerUser.Get("/", controller.GetAllUsers)
+		routerUser.Delete("/:id", controller.DeleteUser)
+		routerUser.Put("/:id", controller.UpdateUser)
 	}
 }

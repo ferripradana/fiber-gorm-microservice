@@ -24,13 +24,13 @@ func (m *MedicineRepositoryImpl) GetAll(page int64, limit int64) (*PaginationRes
 
 	err := m.DB.Model(&Medicine{}).Count(&total).Error
 	if err != nil {
-		return &PaginationResultMedicine{}, err
+		return &PaginationResultMedicine{}, errors.NewAppErrorImpl(err, errors.RepositoryError, fiber.StatusInternalServerError)
 	}
 
 	offset := (page - 1) * limit
 	err = m.DB.Limit(int(limit)).Offset(int(offset)).Find(&medicines).Error
 	if err != nil {
-		return &PaginationResultMedicine{}, err
+		return &PaginationResultMedicine{}, errors.NewAppErrorImpl(err, errors.RepositoryError, fiber.StatusInternalServerError)
 	}
 
 	if limit < 1 {

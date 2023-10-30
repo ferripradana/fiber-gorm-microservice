@@ -28,3 +28,11 @@ func domainToResponseMapper(user *domainUser.User) *ResponseUser {
 		UpdatedAt: user.UpdatedAt,
 	}
 }
+
+func mapFromDomainToResponse(users *[]domainUser.User) *[]ResponseUser {
+	usersResponse := make([]ResponseUser, len(*users))
+	for i, user := range *users {
+		usersResponse[i] = *domainToResponseMapper(&user)
+	}
+	return &usersResponse
+}

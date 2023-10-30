@@ -98,7 +98,7 @@ func (controller *MedicineControllerImpl) UpdateMedicine(ctx *fiber.Ctx) error {
 
 	requestBody := make(map[string]interface{})
 	if err := ctx.BodyParser(&requestBody); err != nil {
-		return ctx.Status(400).JSON(fiber.Map{
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": err.Error(),
 		})
 	}
