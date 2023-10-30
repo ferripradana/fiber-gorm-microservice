@@ -8,4 +8,5 @@ import (
 func AuthRoutes(router fiber.Router, controller auth.AuthController) {
 	routerAuth := router.Group("/auth")
 	routerAuth.Post("/login", controller.Login)
+	routerAuth.Post("/access-token", controller.GetAccessTokenByRefreshToken)
 }

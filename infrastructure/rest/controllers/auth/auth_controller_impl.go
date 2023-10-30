@@ -34,3 +34,17 @@ func (controller *AuthControllerImpl) Login(ctx *fiber.Ctx) error {
 	}
 	return ctx.Status(fiber.StatusOK).JSON(authDataUser)
 }
+
+func (controller *AuthControllerImpl) GetAccessTokenByRefreshToken(ctx *fiber.Ctx) error {
+	request := new(AccessTokenRequest)
+	if err := utils.NewValidation().ValidateRequest(ctx, request); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	authDataUser, err := controller.AuthService.AccessTokenByRefreshToken(request.RefreshToken)
+	if err != nil {
+		appError := errors.NewAppErrorImpl(err, errors.NotAuthorized, fiber.StatusUnauthorized)
+		return fiber.NewError(appError.(*errors.AppErrorImpl).Status, appError.Error())
+	}
+	return ctx.Status(fiber.StatusOK).JSON(authDataUser)
+}
