@@ -1,6 +1,7 @@
 {
   "Environment": "production",
   "ServerPort": 8080,
+  "Address": "",
   "Services": {
     "RabbitMq": "amqp://user:pass@host:5672",
     "SendGrid": {
