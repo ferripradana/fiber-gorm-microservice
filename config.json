@@ -29,7 +29,7 @@
     "MySQL": {
       "BoilerplateGo": {
         "Read": {
-          "Hostname": "127.0.0.1",
+          "Hostname": "mysqldb",
           "Name": "boilerplate_go",
           "Username": "root",
           "Password": "root",
@@ -37,7 +37,7 @@
           "Parameter": "?parseTime=true"
         },
         "Write": {
-          "Hostname": "127.0.0.1",
+          "Hostname": "mysqldb",
           "Name": "boilerplate_go",
           "Username": "root",
           "Password": "root",
