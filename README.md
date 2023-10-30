@@ -1,7 +1,5 @@
 ﻿# Go Fiber GORM Microservice Boilerplate
 
-Under Construction 
-
 Tech Stacks
 ```
 1. Go Programming Language
@@ -69,7 +67,12 @@ docker-compose down
 ```
 
 SWAGGER
+![image](https://github.com/ferripradana/fiber-gorm-microservice/assets/13129987/d09a221d-3b1b-4283-a497-ba1feb6e2852)
+http://localhost:8080/v1/swagger/index.html
+
 ```
-Coming Soon
+1. go get github.com/swaggo/swag/cmd/swag
+2. swag init -g infrastructure/rest/routes/routes.go
+3. go get -u github.com/swaggo/fiber-swagger
 ```
 
