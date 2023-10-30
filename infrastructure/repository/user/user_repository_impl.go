@@ -1,6 +1,8 @@
 package user
 
 import (
+	"encoding/json"
+	"fiber-gorm-microservice/domain/errors"
 	domainUser "fiber-gorm-microservice/domain/user"
 	"gorm.io/gorm"
 )
@@ -25,4 +27,27 @@ func (u *UserRepositoryImpl) GetOneByMap(userMap map[string]interface{}) (*domai
 	}
 
 	return userData.toDomainMapper(), nil
+}
+
+func (u *UserRepositoryImpl) Create(newUser *domainUser.User) (createdUser *domainUser.User, err error) {
+	user := fromDomainMapper(newUser)
+	tx := u.DB.Create(user)
+
+	if tx.Error != nil {
+		byteErr, _ := json.Marshal(tx.Error)
+		var newError errors.GormErr
+		err = json.Unmarshal(byteErr, &newError)
+		if err != nil {
+			return createdUser, err
+		}
+		switch newError.Number {
+		case 1062:
+			err = errors.NewAppErrorWithType(errors.ResourceAlreadyExists)
+		default:
+			err = errors.NewAppErrorWithType(errors.UnknownError)
+		}
+		return createdUser, err
+	}
+	createdUser = user.toDomainMapper()
+	return createdUser, err
 }
