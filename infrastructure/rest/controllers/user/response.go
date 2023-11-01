@@ -14,11 +14,11 @@ type ResponseUser struct {
 }
 
 type PaginationResultUser struct {
-	Data       *[]ResponseUser
-	Total      int64
-	Limit      int64
-	Current    int64
-	NextCursor uint
-	PrevCursor uint
-	NumPages   int64
+	Data       *[]ResponseUser `json:"data"`
+	Total      int64           `json:"total"`
+	Limit      int64           `json:"limit"`
+	Current    int64           `json:"current"`
+	NextCursor uint            `json:"next_cursor"`
+	PrevCursor uint            `json:"prev_cursor"`
+	NumPages   int64           `json:"num_pages"`
 }
