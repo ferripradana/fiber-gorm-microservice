@@ -11,6 +11,25 @@ Tech Stacks
 7. Swagger
 ```
 
+Structure
+```
+application
+   |-- security
+   |-- service
+   |-- utils
+docker
+docs
+domain
+infrastructure
+   |-- repository
+   |-- rest
+      |-- adapter
+      |-- controllers
+      |-- middlewares
+      |-- routes
+main.go
+```
+
 Login API
 ```
 curl --location --request POST 'http://localhost:8080/v1/auth/login' \
